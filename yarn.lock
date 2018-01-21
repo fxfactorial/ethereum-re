@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-bs-platform@bsansouci/bsb-native#master:
+bs-platform@bsansouci/bsb-native:
   version "2.1.1"
-  resolved "https://codeload.github.com/bsansouci/bsb-native/tar.gz/bff0c1e8e04f01d4ae5502406963438fe05ddd24"
+  resolved "https://codeload.github.com/bsansouci/bsb-native/tar.gz/72ff4d7f7015658ccf13a51e03510d2ad557b2ae"
 
 rex-json@bsansouci/rex-json:
   version "1.0.1"

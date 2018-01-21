@@ -2,7 +2,7 @@
   "name": "@algebr/ethereum",
   "version": "0.0.1",
   "scripts": {
-    "build": "bsb -make-world",
+    "build": "bsb -make-world -backend native -backend js",
     "start": "bsb -make-world -backend native -backend js -w",
     "clean": "bsb -clean-world"
   },
@@ -10,7 +10,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "bs-platform": "bsansouci/bsb-native#master"
+    "bs-platform": "bsansouci/bsb-native"
   },
   "dependencies": {
     "rex-json": "bsansouci/rex-json"

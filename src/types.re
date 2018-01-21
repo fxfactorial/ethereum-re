@@ -2,8 +2,8 @@ module JSONRPC = {
   type request = {
     jsonrpc: string,
     method: string,
-    params: array(string),
-    id: string
+    params: [ | `positional(array(string))],
+    id: option(string)
   };
   type error('a) = {
     code: int,
@@ -12,16 +12,24 @@ module JSONRPC = {
   };
   type response('a, 'b) = {
     jsonrpc: string,
-    result: 'a,
-    error: option(error('b))
+    result: option('a),
+    error: option(error('b)),
+    id: string
   };
 };
 
+type networkId =
+  | EthereumMainnet
+  | MordenTestnetDeprecated
+  | RopstenTestnet
+  | RinkebyTestnet
+  | KovanTestnet;
+
 module type EthereumRPC = {
   type promise(+'a);
-  let web3_clientVersion: unit => promise(JSONRPC.response('a, 'b));
-  /* let web3_sha3: string => promise(string); */
-  /* let net_version */
+  let web3_clientVersion: unit => promise(JSONRPC.response(string, 'b));
+  let web3_sha3: string => promise(JSONRPC.response(string, 'b));
+  let net_version: unit => promise(JSONRPC.response(networkId, 'b));
   /* let net_peerCount */
   /* let net_listening */
   /* let eth_protocolVersion */
