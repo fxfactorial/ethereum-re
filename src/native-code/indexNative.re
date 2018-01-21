@@ -17,7 +17,7 @@ let (|>>) = (value, fn) =>
   | Some(v) => fn(v)
   };
 
-module Handle =
+module API =
   Types.Make(
     {
       type promise('a) = Lwt.t('a);
@@ -36,17 +36,23 @@ module Handle =
                 get("error", parsed),
                 get("id", parsed)
               ) {
-              | (_, None, Some(oops), _) => {
-                  jsonrpc: "10",
-                  result: None,
-                  error: None,
-                  id: "1"
-                }
-              | (None, Some(result), None, None) => {
-                  jsonrpc: "10",
-                  result: None,
-                  error: None,
-                  id: "1"
+              | (Some(jsonrpc), result, error, Some(id)) =>
+                switch (result, error) {
+                | (Some(r), None) => {
+                    jsonrpc: stringify(jsonrpc),
+                    result: Some(stringify(r)),
+                    error: None,
+                    id: stringify(id)
+                  }
+                | (None, Some(e)) =>
+                  let r = Util.extractError(e);
+                  {
+                    jsonrpc: stringify(jsonrpc),
+                    result: None,
+                    error: Some(r),
+                    id: stringify(id)
+                  };
+                | _ => assert false
                 }
               | _ => assert false
               };
@@ -60,7 +66,17 @@ module Handle =
 
 let () = {
   open Lwt;
-  let a = Handle.web3_clientVersion() >>= (s => Lwt.return_unit);
+  let a =
+    API.web3_clientVersion()
+    >>= (
+      s => {
+        switch s {
+        | {jsonrpc, result: Some(s)} => print_endline(s)
+        | _ => ()
+        };
+        Lwt.return_unit;
+      }
+    );
   let program = query("http://localhost:8545");
   Lwt_main.run(program) |> ignore;
 };

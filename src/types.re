@@ -27,7 +27,7 @@ type networkId =
 
 module type EthereumRPC = {
   type promise(+'a);
-  let web3_clientVersion: unit => promise(JSONRPC.response(string, 'b));
+  let web3_clientVersion: unit => promise(JSONRPC.response(string, Json.t));
   let web3_sha3: string => promise(JSONRPC.response(string, 'b));
   let net_version: unit => promise(JSONRPC.response(networkId, 'b));
   /* let net_peerCount */
