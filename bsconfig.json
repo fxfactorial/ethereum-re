@@ -1,0 +1,38 @@
+{
+  "name": "@algebr/ethereum",
+  "bsc-flags": ["-bs-super-errors", "-w -27", "-g"],
+  "warnings": {
+    "number": "-40+6+7-26-27+32..39-28-44+45",
+    "error": "+8"
+  },
+  "package-specs": ["commonjs", "es6"],
+  "sources": [
+    {
+      "dir": "src",
+      "subdirs": [
+        {
+          "dir": "native-code",
+          "backend": ["native"]
+        },
+        {
+          "dir": "js-code",
+          "backend": ["js"]
+        }
+      ]
+    }
+  ],
+  "ocamlfind-dependencies": ["lwt.unix", "cohttp.lwt"],
+  "bs-dependencies": ["rex-json"],
+  "entries": [
+    {
+      "backend": "native",
+      "main-module": "IndexNative"
+    },
+    {
+      "backend": "js",
+      "main-module": "IndexJs"
+    }
+  ],
+  "namespace": true,
+  "refmt": 3
+}

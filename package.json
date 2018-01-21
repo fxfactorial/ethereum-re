@@ -1,0 +1,18 @@
+{
+  "name": "@algebr/ethereum",
+  "version": "0.0.1",
+  "scripts": {
+    "build": "bsb -make-world",
+    "start": "bsb -make-world -backend native -backend js -w",
+    "clean": "bsb -clean-world"
+  },
+  "keywords": ["BuckleScript"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "bs-platform": "bsansouci/bsb-native#2.1.1"
+  },
+  "dependencies": {
+    "rex-json": "bsansouci/rex-json"
+  }
+}
