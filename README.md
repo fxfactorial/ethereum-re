@@ -1,18 +1,12 @@
-# Basic Reason Template
+# Pure ReasonML Library to Ethereum
 
-Hello! This project allows you to quickly get started with Reason and BuckleScript. If you wanted a more sophisticated version, try the `react` template (`bsb -theme react -init .`).
+`ethereum-re` is a pure ReasonML library that implements the JSONRPC
+protocol. You can compile this library to JavaScript or compile to
+native code.
 
-# Build
-```
-npm run build
-```
+# Development
 
-# Build + Watch
+`yarn --production=false`
 
-```
-npm run watch
-```
-
-
-# Editor
-If you use `vscode`, Press `Windows + Shift + B` it will build automatically
+and then either `./node_modules/.bin/bsb -make-world -backend native
+-w` or `./node_modules/.bin/bsb -make-world -backend js -w`
