@@ -25,11 +25,11 @@ module Handle =
   Types.Make(
     {
       type promise('a) = Lwt.t('a);
+      let web3_clientVersion = () => assert false;
     }
   );
 
 let () = {
-  Handle.web3_clientVersion();
   let program = query("http://localhost:8545");
   Lwt_main.run(program);
 };

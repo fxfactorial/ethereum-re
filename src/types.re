@@ -1,7 +1,26 @@
+module JSONRPC = {
+  type request = {
+    jsonrpc: string,
+    method: string,
+    params: array(string),
+    id: string
+  };
+  type error('a) = {
+    code: int,
+    message: string,
+    data: option('a)
+  };
+  type response('a, 'b) = {
+    jsonrpc: string,
+    result: 'a,
+    error: option(error('b))
+  };
+};
+
 module type EthereumRPC = {
   type promise(+'a);
-  let web3_clientVersion: unit => promise(Json.t);
-  /* let web3_sha3: unit => Json.t; */
+  let web3_clientVersion: unit => promise(JSONRPC.response('a, 'b));
+  /* let web3_sha3: string => promise(string); */
   /* let net_version */
   /* let net_peerCount */
   /* let net_listening */

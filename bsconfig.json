@@ -21,7 +21,7 @@
       ]
     }
   ],
-  "ocamlfind-dependencies": ["lwt.unix", "cohttp.lwt"],
+  "ocamlfind-dependencies": ["lwt.unix", "cohttp.lwt", "result"],
   "bs-dependencies": ["rex-json"],
   "entries": [
     {
