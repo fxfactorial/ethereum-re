@@ -4,6 +4,12 @@ let stringOfRpcVersion: Types.rpcVersion => string =
   fun
   | `two_zero => "2.0";
 
+let stringOfBlockTag: Types.blockTag => string =
+  fun
+  | `latest => "latest"
+  | `earliest => "earliest"
+  | `pending => "pending";
+
 let extractError = e =>
   Json.(
     switch (get("code", e), get("message", e), get("data", e)) {

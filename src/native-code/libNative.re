@@ -1,7 +1,5 @@
 open Lwt;
 
-type blockTag = [@deriving show] [ | `latest | `earliest | `pending];
-
 let send = (~conn: Types.connection, ~uri, ~params: Json.t, ~method, ~id, ()) =>
   /* print_endline(msg); */
   Cohttp_lwt_unix.Client.post(~body=`String(Util.makeMsg(conn, method, id, params)), uri)
@@ -74,10 +72,10 @@ class eth (~connection: Types.connection, ()) = {
     incr(idCounter);
     sendPrep(~params=Json.Array([]), ~method="eth_blockNumber", ~id=idCounter^, ());
   };
-  pub getBalance = (~address, ~quantity: blockTag, ()) => {
+  pub getBalance = (~address, ~quantity: Types.blockTag, ()) => {
     incr(idCounter);
     sendPrep(
-      ~params=Json.Array([Json.String(address), Json.String(show(quantity))]),
+      ~params=Json.Array([Json.String(address), Json.String(Util.stringOfBlockTag(quantity))]),
       ~method="eth_getBalance",
       ~id=idCounter^,
       ()

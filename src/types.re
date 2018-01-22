@@ -1,3 +1,5 @@
+type blockTag = [ | `latest | `earliest | `pending];
+
 type rpcVersion = [ | `two_zero];
 
 type connection = {
