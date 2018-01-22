@@ -2,8 +2,8 @@ open Lwt;
 
 let () = {
   let conn = Types.{endpoint: "http://localhost:8545", rpcVersion: `two_zero};
-  let web3 = (new Native.web3)(~connection=conn, ());
-  let net = (new Native.net)(~connection=conn, ());
+  let web3 = (new LibNative.web3)(~connection=conn, ());
+  let net = (new LibNative.net)(~connection=conn, ());
   Lwt_main.run(
     net#listening
     >>= (

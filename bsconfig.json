@@ -30,7 +30,8 @@
     }
   ],
   "ocamlfind-dependencies": ["lwt.unix", "cohttp.lwt", "result"],
-  "bs-dependencies": ["rex-json", "bs-fetch"],
+  // Put back bs-fetch when can build it only for JS
+  "bs-dependencies": ["rex-json"],
   "entries": [
     {
       "backend": "native",
