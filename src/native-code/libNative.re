@@ -1,5 +1,7 @@
 open Lwt;
 
+type blockTag = [@deriving show] [ | `latest | `earliest | `pending];
+
 let send = (~conn: Types.connection, ~uri, ~params: Json.t, ~method, ~id, ()) =>
   /* print_endline(msg); */
   Cohttp_lwt_unix.Client.post(~body=`String(Util.makeMsg(conn, method, id, params)), uri)
@@ -55,5 +57,30 @@ class eth (~connection: Types.connection, ()) = {
   pub mining = {
     incr(idCounter);
     sendPrep(~params=Json.Array([]), ~method="eth_mining", ~id=idCounter^, ());
+  };
+  pub hashrate = {
+    incr(idCounter);
+    sendPrep(~params=Json.Array([]), ~method="eth_hashrate", ~id=idCounter^, ());
+  };
+  pub gasPrice = {
+    incr(idCounter);
+    sendPrep(~params=Json.Array([]), ~method="eth_gasPrice", ~id=idCounter^, ());
+  };
+  pub accounts = {
+    incr(idCounter);
+    sendPrep(~params=Json.Array([]), ~method="eth_accounts", ~id=idCounter^, ());
+  };
+  pub blockNumber = {
+    incr(idCounter);
+    sendPrep(~params=Json.Array([]), ~method="eth_blockNumber", ~id=idCounter^, ());
+  };
+  pub getBalance = (~address, ~quantity: blockTag, ()) => {
+    incr(idCounter);
+    sendPrep(
+      ~params=Json.Array([Json.String(address), Json.String(show(quantity))]),
+      ~method="eth_getBalance",
+      ~id=idCounter^,
+      ()
+    );
   };
 };

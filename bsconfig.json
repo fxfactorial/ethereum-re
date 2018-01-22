@@ -29,7 +29,13 @@
       ]
     }
   ],
-  "ocamlfind-dependencies": ["lwt.unix", "cohttp.lwt", "result"],
+  "ocamlfind-dependencies": [
+    "lwt.unix",
+    "cohttp.lwt",
+    "result",
+    "ppx_deriving.show",
+    "ppx_deriving.std"
+  ],
   // Put back bs-fetch when can build it only for JS
   "bs-dependencies": ["rex-json"],
   "entries": [
