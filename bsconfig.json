@@ -17,22 +17,32 @@
         {
           "dir": "js-code",
           "backend": ["js"]
+        },
+        {
+          "dir": "__test_native__",
+          "backend": ["native"]
+        },
+        {
+          "dir": "__test_js__",
+          "backend": ["js"]
         }
       ]
     }
   ],
   "ocamlfind-dependencies": ["lwt.unix", "cohttp.lwt", "result"],
-  "bs-dependencies": ["rex-json"],
+  "bs-dependencies": ["rex-json", "bs-fetch"],
   "entries": [
     {
       "backend": "native",
-      "main-module": "IndexNative"
+      "main-module": "LibNative"
     },
     {
       "backend": "js",
-      "main-module": "IndexJs"
-    }
+      "main-module": "LibJs"
+    },
+    { "backend": "native", "main-module": "SanityCheck" },
+    { "backend": "js", "main-module": "SanityCheckJS" }
   ],
-  "namespace": true,
+  "namespace": false,
   "refmt": 3
 }

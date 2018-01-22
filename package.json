@@ -6,13 +6,17 @@
     "start": "bsb -make-world -backend native -backend js -w",
     "clean": "bsb -clean-world"
   },
-  "keywords": ["BuckleScript"],
+  "keywords": [
+    "BuckleScript"
+  ],
   "author": "",
   "license": "MIT",
   "devDependencies": {
     "bs-platform": "bsansouci/bsb-native"
   },
   "dependencies": {
+    "bs-fetch": "^0.2.1",
+    "isomorphic-fetch": "^2.2.1",
     "rex-json": "bsansouci/rex-json"
   }
 }
