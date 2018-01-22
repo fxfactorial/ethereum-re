@@ -1,4 +1,4 @@
-type blockTag = [ | `latest | `earliest | `pending];
+type blockTag = [ | `latest | `earliest | `pending | `blockNumber(int)];
 
 type rpcVersion = [ | `two_zero];
 
@@ -27,3 +27,12 @@ type networkId =
   | RopstenTestnet
   | RinkebyTestnet
   | KovanTestnet;
+
+type transaction = {
+  from: string,
+  to_: string,
+  gas: string,
+  gasPrice: string,
+  value: string,
+  data: string
+};

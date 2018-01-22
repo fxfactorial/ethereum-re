@@ -8,7 +8,8 @@ let stringOfBlockTag: Types.blockTag => string =
   fun
   | `latest => "latest"
   | `earliest => "earliest"
-  | `pending => "pending";
+  | `pending => "pending"
+  | `blockNumber(a) => string_of_int(a);
 
 let extractError = e =>
   Json.(
@@ -31,3 +32,17 @@ let makeMsg = (conn, method, id, params) =>
     ("id", Json.Number(float_of_int(id)))
   ])
   |> Json.stringify;
+
+let transactionToString: Types.transaction => string =
+  ({from, to_, gas, gasPrice, value, data}) =>
+    Json.(
+      Object([
+        ("from", String(from)),
+        ("to", String(to_)),
+        ("gas", String(gas)),
+        ("gasPrice", String(gasPrice)),
+        ("value", String(value)),
+        ("data", String(data))
+      ])
+      |> stringify
+    );

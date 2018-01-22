@@ -10,7 +10,7 @@ class common (~connection: Types.connection) = {
   val sendPrep = send(~conn=connection, ~uri=Uri.of_string(connection.endpoint));
 };
 
-class web3 (~connection: Types.connection, ()) = {
+class web3 (~connection: Types.connection) = {
   inherit (class common)(~connection);
   pub clientVersion = {
     incr(idCounter);
@@ -22,7 +22,7 @@ class web3 (~connection: Types.connection, ()) = {
   };
 };
 
-class net (~connection: Types.connection, ()) = {
+class net (~connection: Types.connection) = {
   inherit (class common)(~connection);
   pub version = {
     incr(idCounter);
@@ -38,7 +38,7 @@ class net (~connection: Types.connection, ()) = {
   };
 };
 
-class eth (~connection: Types.connection, ()) = {
+class eth (~connection: Types.connection) = {
   inherit (class common)(~connection);
   pub protocolVersion = {
     incr(idCounter);
@@ -72,7 +72,7 @@ class eth (~connection: Types.connection, ()) = {
     incr(idCounter);
     sendPrep(~params=Json.Array([]), ~method="eth_blockNumber", ~id=idCounter^, ());
   };
-  pub getBalance = (~address, ~quantity: Types.blockTag, ()) => {
+  pub getBalance = (~address, ~quantity: Types.blockTag) => {
     incr(idCounter);
     sendPrep(
       ~params=Json.Array([Json.String(address), Json.String(Util.stringOfBlockTag(quantity))]),
@@ -80,5 +80,33 @@ class eth (~connection: Types.connection, ()) = {
       ~id=idCounter^,
       ()
     );
+  };
+  pub getStorageAt = (~address, ~position: int, ~quantity: Types.blockTag) => {
+    incr(idCounter);
+    let params =
+      Json.(
+        Array([
+          String(address),
+          Number(float_of_int(position)),
+          String(Util.stringOfBlockTag(quantity))
+        ])
+      );
+    sendPrep(~params, ~method="eth_getStorageAt", ~id=idCounter^, ());
+  };
+  pub getTransactionCount = (~address, ~quantity: Types.blockTag) => {
+    incr(idCounter);
+    let params = Json.(Array([String(address), String(Util.stringOfBlockTag(quantity))]));
+    sendPrep(~params, ~method="eth_getTransactionCount", ~id=idCounter^, ());
+  };
+  pub eth_getBlockTransactionCountByHash = block => {
+    incr(idCounter);
+    let params = Json.Array([Json.String(block)]);
+    sendPrep(~params, ~method="eth_getBlockTransactionCountByHash", ~id=idCounter^, ());
+  };
+  /* Missing a bunch of methods */
+  pub eth_sendTransaction = transaction => {
+    incr(idCounter);
+    let params = Json.Array([Json.String(Util.transactionToString(transaction))]);
+    sendPrep(~params, ~method="eth_sendTransaction", ~id=idCounter^, ());
   };
 };
