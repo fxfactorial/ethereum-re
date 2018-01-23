@@ -57,5 +57,38 @@ let transactionToString: Types.transaction => Json.t =
       )
     );
 
+let safeGet = (key, json) =>
+  switch (Json.get(key, json)) {
+  | None => None
+  | Some(s) => Some(Json.stringify(s))
+  };
+
+let unsafeGet = (key, json) =>
+  switch (Json.get(key, json)) {
+  | None => raise(Not_found)
+  | Some(s) => Json.stringify(s)
+  };
+
+let parseTransaction = t =>
+  switch (Json.parse(t)) {
+  | Json.Null => None
+  | s =>
+    Some(
+      Types.{
+        hash: unsafeGet("hash", s),
+        nonce: unsafeGet("nonce", s),
+        blockHash: safeGet("blockHash", s),
+        blockNumber: safeGet("blockNumber", s),
+        transactionIndex: safeGet("transactionIndex", s),
+        from: unsafeGet("from", s),
+        to_: safeGet("to", s),
+        value: unsafeGet("value", s),
+        gasPrice: unsafeGet("gasPrice", s),
+        gas: unsafeGet("gas", s),
+        input: unsafeGet("input", s)
+      }
+    )
+  };
+
 /* verify that it starts with 0x and is length 42 */
 let verifyHexlength = s => true;

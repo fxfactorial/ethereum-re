@@ -37,6 +37,20 @@ type transaction = {
   data: option(string)
 };
 
+type transactionResult = {
+  hash: string,
+  nonce: string,
+  blockHash: option(string),
+  blockNumber: option(string),
+  transactionIndex: option(string),
+  from: string,
+  to_: option(string),
+  value: string,
+  gasPrice: string,
+  gas: string,
+  input: string
+};
+
 type block = {
   number: option(string),
   hash: option(string),
@@ -58,3 +72,5 @@ type block = {
   transactions: [ | `transactions(array(transaction)) | `hashes(array(string))],
   uncles: array(string)
 };
+
+type compileResult = {code: string};

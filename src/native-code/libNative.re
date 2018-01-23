@@ -158,6 +158,50 @@ class eth (~connection: Types.connection) = {
   pub getTransactionByHash = (~data) => {
     incr(idCounter);
     let params = Json.Array([Json.String(data)]);
+    /* Lwt.( */
     sendPrep(~params, ~method="eth_getTransactionByHash", ~id=idCounter^, ());
+    /*   >|= Util.parseTransaction */
+    /* ); */
   };
+  pub getTransactionByBlockHashAndIndex = (~blockHash, ~position) => {
+    incr(idCounter);
+    let params = Json.(Array([String(blockHash), String(position)]));
+    sendPrep(~params, ~method="eth_getTransactionByBlockHashAndIndex", ~id=idCounter^, ());
+  };
+  pub getTransactionByBlockNumberAndIndex = (~tag, ~position) => {
+    incr(idCounter);
+    let params = Json.(Array([Util.stringOfBlockTag(tag), String(position)]));
+    sendPrep(~params, ~method="eth_getTransactionByBlockNumberAndIndex", ~id=idCounter^, ());
+  };
+  pub getTransactionReceipt = data => {
+    incr(idCounter);
+    let params = Json.(Array([String(data)]));
+    sendPrep(~params, ~method="eth_getTransactionReceipt", ~id=idCounter^, ());
+  };
+  pub getUncleByBlockHashAndIndex = (~data, ~position) => {
+    incr(idCounter);
+    let params = Json.(Array([String(data), String(position)]));
+    sendPrep(~params, ~method="eth_getUncleByBlockHashAndIndex", ~id=idCounter^, ());
+  };
+  pub getUncleByBlockNumberAndIndex = (~tag, ~position) => {
+    incr(idCounter);
+    let params = Json.(Array([Util.stringOfBlockTag(tag), String(position)]));
+    sendPrep(~params, ~method="eth_getUncleByBlockNumberAndIndex", ~id=idCounter^, ());
+  };
+  pub getCompilers = () => {
+    incr(idCounter);
+    let params = Json.(Array([]));
+    sendPrep(~params, ~method="eth_getCompilers", ~id=idCounter^, ());
+  };
+  pub compileSolidity = (~sourceCode) => {
+    incr(idCounter);
+    let params = Json.(Array([String(sourceCode)]));
+    sendPrep(~params, ~method="eth_compileSolidity", ~id=idCounter^, ());
+  };
+  /* compileLLL && compileSerpent missing */
+  /* pub compileSolidity = (~sourceCode) => { */
+  /*   incr(idCounter); */
+  /*   let params = Json.(Array([String(sourceCode)])); */
+  /*   sendPrep(~params, ~method="eth_compileSolidity", ~id=idCounter^, ()); */
+  /* }; */
 };
