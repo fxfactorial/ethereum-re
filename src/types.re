@@ -1,4 +1,4 @@
-type blockTag = [ | `latest | `earliest | `pending | `blockNumber(int)];
+type blockTag = [ | `latest | `earliest | `pending | `blockNumber(string)];
 
 type rpcVersion = [ | `two_zero];
 
@@ -29,10 +29,32 @@ type networkId =
   | KovanTestnet;
 
 type transaction = {
-  from: string,
-  to_: string,
-  gas: string,
-  gasPrice: string,
-  value: string,
-  data: string
+  from: option(string),
+  to_: option(string),
+  gas: option(string),
+  gasPrice: option(string),
+  value: option(string),
+  data: option(string)
+};
+
+type block = {
+  number: option(string),
+  hash: option(string),
+  parentHash: string,
+  nonce: option(string),
+  sha3Uncles: string,
+  logsBloom: option(string),
+  transactionsRoot: string,
+  stateRoot: string,
+  receiptsRoot: string,
+  miner: string,
+  difficulty: string,
+  totalDifficulty: string,
+  extraData: string,
+  size: string,
+  gasLimit: string,
+  gasUsed: string,
+  timestamp: string,
+  transactions: [ | `transactions(array(transaction)) | `hashes(array(string))],
+  uncles: array(string)
 };

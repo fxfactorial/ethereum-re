@@ -75,7 +75,7 @@ class eth (~connection: Types.connection) = {
   pub getBalance = (~address, ~quantity: Types.blockTag) => {
     incr(idCounter);
     sendPrep(
-      ~params=Json.Array([Json.String(address), Json.String(Util.stringOfBlockTag(quantity))]),
+      ~params=Json.Array([Json.String(address), Util.stringOfBlockTag(quantity)]),
       ~method="eth_getBalance",
       ~id=idCounter^,
       ()
@@ -85,28 +85,79 @@ class eth (~connection: Types.connection) = {
     incr(idCounter);
     let params =
       Json.(
-        Array([
-          String(address),
-          Number(float_of_int(position)),
-          String(Util.stringOfBlockTag(quantity))
-        ])
+        Array([String(address), Number(float_of_int(position)), Util.stringOfBlockTag(quantity)])
       );
     sendPrep(~params, ~method="eth_getStorageAt", ~id=idCounter^, ());
   };
   pub getTransactionCount = (~address, ~quantity: Types.blockTag) => {
     incr(idCounter);
-    let params = Json.(Array([String(address), String(Util.stringOfBlockTag(quantity))]));
+    let params = Json.(Array([String(address), Util.stringOfBlockTag(quantity)]));
     sendPrep(~params, ~method="eth_getTransactionCount", ~id=idCounter^, ());
   };
-  pub eth_getBlockTransactionCountByHash = block => {
+  pub getBlockTransactionCountByHash = block => {
     incr(idCounter);
     let params = Json.Array([Json.String(block)]);
     sendPrep(~params, ~method="eth_getBlockTransactionCountByHash", ~id=idCounter^, ());
   };
-  /* Missing a bunch of methods */
-  pub eth_sendTransaction = transaction => {
+  pub getBlockTransactionCountByNumber = quantity => {
     incr(idCounter);
-    let params = Json.Array([Json.String(Util.transactionToString(transaction))]);
+    let params = Json.Array([Util.stringOfBlockTag(quantity)]);
+    sendPrep(~params, ~method="eth_getBlockTransactionCountByNumber", ~id=idCounter^, ());
+  };
+  pub getUncleCountByBlockHash = (~blockHash) => {
+    incr(idCounter);
+    let params = Json.Array([Json.String(blockHash)]);
+    sendPrep(~params, ~method="eth_getUncleCountByBlockHash", ~id=idCounter^, ());
+  };
+  pub getUncleCountByBlockNumber = (~tag) => {
+    incr(idCounter);
+    let params = Json.Array([Util.stringOfBlockTag(tag)]);
+    sendPrep(~params, ~method="eth_getUncleCountByBlockNumber", ~id=idCounter^, ());
+  };
+  pub getCode = (~address, ~tag) => {
+    incr(idCounter);
+    let params = Json.Array([Json.String(address), Util.stringOfBlockTag(tag)]);
     sendPrep(~params, ~method="eth_sendTransaction", ~id=idCounter^, ());
+  };
+  pub sign = (~address, ~data) => {
+    incr(idCounter);
+    let params = Json.Array([Json.String(address), Json.String(data)]);
+    sendPrep(~params, ~method="eth_sendTransaction", ~id=idCounter^, ());
+  };
+  pub sendTransaction = transaction => {
+    incr(idCounter);
+    let params = Json.Array([Util.transactionToString(transaction)]);
+    sendPrep(~params, ~method="eth_sendTransaction", ~id=idCounter^, ());
+  };
+  pub eth_sendRawTransaction = (~signedTransaction) => {
+    incr(idCounter);
+    let params = Json.Array([Util.transactionToString(signedTransaction)]);
+    sendPrep(~params, ~method="eth_sendRawTransaction", ~id=idCounter^, ());
+  };
+  pub call = (~transaction, ~tag) => {
+    incr(idCounter);
+    let params = Json.Array([Util.transactionToString(transaction), Util.stringOfBlockTag(tag)]);
+    sendPrep(~params, ~method="eth_call", ~id=idCounter^, ());
+  };
+  pub estimateGas = (~transaction, ~tag) => {
+    incr(idCounter);
+    let params = Json.Array([Util.transactionToString(transaction), Util.stringOfBlockTag(tag)]);
+    sendPrep(~params, ~method="eth_estimateGas", ~id=idCounter^, ());
+  };
+  pub getBlockByHash = (~data, ~fullTransaction) => {
+    incr(idCounter);
+    let params = Json.Array([Json.String(data), fullTransaction ? Json.True : Json.False]);
+    sendPrep(~params, ~method="eth_getBlockByHash", ~id=idCounter^, ());
+  };
+  pub getBlockByNumber = (~tag, ~fullTransaction) => {
+    incr(idCounter);
+    let params =
+      Json.Array([Util.stringOfBlockTag(tag), fullTransaction ? Json.True : Json.False]);
+    sendPrep(~params, ~method="eth_getBlockByNumber", ~id=idCounter^, ());
+  };
+  pub getTransactionByHash = (~data) => {
+    incr(idCounter);
+    let params = Json.Array([Json.String(data)]);
+    sendPrep(~params, ~method="eth_getTransactionByHash", ~id=idCounter^, ());
   };
 };

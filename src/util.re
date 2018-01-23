@@ -4,13 +4,17 @@ let stringOfRpcVersion: Types.rpcVersion => string =
   fun
   | `two_zero => "2.0";
 
-let stringOfBlockTag: Types.blockTag => string =
-  fun
-  | `latest => "latest"
-  | `earliest => "earliest"
-  | `pending => "pending"
-  | `blockNumber(a) => string_of_int(a);
+let stringOfBlockTag: Types.blockTag => Json.t = {
+  let helper =
+    fun
+    | `latest => "latest"
+    | `earliest => "earliest"
+    | `pending => "pending"
+    | `blockNumber(a) => a;
+  s => Json.String(helper(s));
+};
 
+/* |> fun s => Json.String(s) */
 let extractError = e =>
   Json.(
     switch (get("code", e), get("message", e), get("data", e)) {
@@ -33,16 +37,25 @@ let makeMsg = (conn, method, id, params) =>
   ])
   |> Json.stringify;
 
-let transactionToString: Types.transaction => string =
+let withField = fieldName =>
+  fun
+  | None => []
+  | Some(s) => [(fieldName, Json.String(s))];
+
+let transactionToString: Types.transaction => Json.t =
   ({from, to_, gas, gasPrice, value, data}) =>
     Json.(
-      Object([
-        ("from", String(from)),
-        ("to", String(to_)),
-        ("gas", String(gas)),
-        ("gasPrice", String(gasPrice)),
-        ("value", String(value)),
-        ("data", String(data))
-      ])
-      |> stringify
+      Object(
+        List.flatten([
+          withField("from", from),
+          withField("to", to_),
+          withField("gas", gas),
+          withField("gasPrice", gasPrice),
+          withField("value", value),
+          withField("data", data)
+        ])
+      )
     );
+
+/* verify that it starts with 0x and is length 42 */
+let verifyHexlength = s => true;
