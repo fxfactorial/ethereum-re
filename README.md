@@ -21,7 +21,7 @@ $ eval `opam config env`
 Then: 
 
 ```
-opam install lwt cotthp result ppx_deriving -y
+opam install lwt cohttp result ppx_deriving -y
 ```
 
 And then: 
