@@ -1,3 +1,7 @@
+type address = string;
+
+type data = bytes;
+
 type blockTag = [ | `latest | `earliest | `pending | `blockNumber(string)];
 
 type rpcVersion = [ | `two_zero];
@@ -71,6 +75,20 @@ type block = {
   timestamp: string,
   transactions: [ | `transactions(array(transaction)) | `hashes(array(string))],
   uncles: array(string)
+};
+
+type topic =
+  | Anything
+  | AInFirst(string)
+  | AnyInFirstBInSecond(string)
+  | AInFirstAndBInSecond(string, string)
+  | AOrBInFirstAndAOrBInSecond(string, string);
+
+type filter = {
+  fromBlock: option(blockTag),
+  toBlock: option(blockTag),
+  address: option([ | `contract(address) | `contracts(array(address))]),
+  topics: option(array(topic))
 };
 
 type compileResult = {code: string};

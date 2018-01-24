@@ -90,5 +90,18 @@ let parseTransaction = t =>
     )
   };
 
+let topicToJson: Types.topic => Json.t =
+  Json.(
+    fun
+    | Anything => Array([])
+    | AInFirst(a) => Array([String(a)])
+    | AnyInFirstBInSecond(b) => Array([Null, String(b)])
+    | AInFirstAndBInSecond(a, b) => Array([String(a), String(b)])
+    | AOrBInFirstAndAOrBInSecond(a, b) =>
+      Array([Array([String(a), String(b)]), Array([String(a), String(b)])])
+  );
+
+let filterToJson: Types.filter => Json.t = Json.(({fromBlock, toBlock, address, topics}) => Null);
+
 /* verify that it starts with 0x and is length 42 */
 let verifyHexlength = s => true;
